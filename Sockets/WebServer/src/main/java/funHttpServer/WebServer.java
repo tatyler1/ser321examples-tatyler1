@@ -200,9 +200,9 @@ class WebServer {
             // This multiplies two numbers, there is NO error handling, so when
             // wrong data is given this just crashes
 
-            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-            // extract path parameters
-            query_pairs = splitQuery(request.replace("multiply?", ""));
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          query_pairs = splitQuery(request.replace("multiply?", ""));
 
             // extract required fields from parameters
 
@@ -287,7 +287,96 @@ class WebServer {
 
 
 
-        } else {
+        } else if (request.contains("pingWebsite?")) {
+
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          query_pairs = splitQuery(request.replace("pingWebsite?", ""));
+
+          String url = "";
+
+
+          try {
+            url = query_pairs.get("url");
+          } catch (Exception e) {
+            builder.append("HTTP/1.1 406 Not Acceptable\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("url was not defined. Did you enter it in correctly?");
+          }
+
+
+          String result = "";
+          try {
+            URL urlObj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+            con.setRequestMethod("GET");
+            // Set connection timeout
+
+            con.setConnectTimeout(3000);
+            con.connect();
+
+            int code = con.getResponseCode();
+            if (code == 200) {
+              result = "On";
+            }
+          } catch (Exception e) {
+            result = "Off";
+          }
+
+          if(!url.contains(".com")) {
+            builder.append("HTTP/1.1 400 BAD REQUEST\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("url was not entered correctly. Please try again.");
+          } else {
+            builder.append("HTTP/1.1 200 OK\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("This website is currently: " + result);
+          }
+
+
+
+        } else if (request.contains("bankAccount?")) {
+          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+          // extract path parameters
+          query_pairs = splitQuery(request.replace("bankAccount?", ""));
+
+          String username = null;
+          String password = null;
+          double money = 2.0;
+
+
+          try {
+            username = query_pairs.get("userName");
+            password = query_pairs.get("password");
+          } catch (Exception e) {
+            builder.append("HTTP/1.1 405 METHOD NOT ALLOWED\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Too few parameters, please add username and password");
+          }
+
+          if(username == null || password == null) {
+            builder.append("HTTP/1.1 400 BAD REQUEST\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("No password or username was inputted. Please reenter information");
+          } else if (username.toLowerCase().contains("tatyler1") && password.toLowerCase().contains("example")) {
+            builder.append("HTTP/1.1 200 OK\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Bank account: " + money);
+          }
+          else {
+            builder.append("HTTP/1.1 400 BAD REQUEST\n");
+            builder.append("Content-Type: text/html; charset=utf-8\n");
+            builder.append("\n");
+            builder.append("Incorrect username or password, please reenter your information");
+          }
+        }
+        else {
           // if the request is not recognized at all
 
           builder.append("HTTP/1.1 400 Bad Request\n");
