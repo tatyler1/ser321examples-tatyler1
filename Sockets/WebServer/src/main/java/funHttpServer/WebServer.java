@@ -352,7 +352,7 @@ class WebServer {
             username = query_pairs.get("userName");
             password = query_pairs.get("password");
           } catch (Exception e) {
-            builder.append("HTTP/1.1 405 METHOD NOT ALLOWED\n");
+            builder.append("HTTP/1.1 406 NOT ACCEPTABLE\n");
             builder.append("Content-Type: text/html; charset=utf-8\n");
             builder.append("\n");
             builder.append("Too few parameters, please add username and password");
