@@ -207,24 +207,24 @@ class WebServer {
 
             Integer num1;
             Integer num2;
-            do {
-                num1 = Integer.parseInt(query_pairs.get("num1"));
-                num2 = Integer.parseInt(query_pairs.get("num2"));
-            } while (num1 == null||num2 == null);
+
+            try {
+              num1 = Integer.parseInt(query_pairs.get("num1"));
+              num2 = Integer.parseInt(query_pairs.get("num2"));
+            } catch (Exception e) {
+              builder.append("Ya broke it ya silly goose");
+            }
+
 
 
             // do math
             Integer result = num1 * num2;
 
             // Generate response
-            try {
-                builder.append("HTTP/1.1 200 OK\n");
-                builder.append("Content-Type: text/html; charset=utf-8\n");
-                builder.append("\n");
-                builder.append("Result is: " + result);
-            } catch (Exception e) {
-                builder.append("Error: " + e);
-            }
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Result is: " + result);
 
             // TODO: Include error handling here with a correct error code and
             // a response that makes sense
