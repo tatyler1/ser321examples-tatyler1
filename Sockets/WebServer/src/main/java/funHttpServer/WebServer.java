@@ -215,6 +215,17 @@ class WebServer {
               builder.append("Ya broke it ya silly goose");
             }
 
+            boolean numDone = false;
+            while(!numDone) {
+              if(num1==null || num2 == null) {
+                builder.append("Please input the numbers ya dummy");
+              }
+              else {
+                numDone = true;
+              }
+            }
+
+
 
 
             // do math
