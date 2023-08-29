@@ -211,7 +211,7 @@ class WebServer {
                 num1 = Integer.parseInt(query_pairs.get("num1"));
                 num2 = Integer.parseInt(query_pairs.get("num2"));
             } catch (Exception e) {
-                builder.append("I broke lol");
+                builder.append("I broke lol\n");
             }
 
 
