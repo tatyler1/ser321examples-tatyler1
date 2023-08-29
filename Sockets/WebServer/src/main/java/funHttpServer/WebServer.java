@@ -205,8 +205,8 @@ class WebServer {
 
             // extract required fields from parameters
 
-            Integer num1;
-            Integer num2;
+            Integer num1 = null;
+            Integer num2 = null;
 
             try {
               num1 = Integer.parseInt(query_pairs.get("num1"));
