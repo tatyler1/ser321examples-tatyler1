@@ -211,23 +211,29 @@ class WebServer {
                 num1 = Integer.parseInt(query_pairs.get("num1"));
                 num2 = Integer.parseInt(query_pairs.get("num2"));
             } catch (Exception e) {
-                builder.append("I broke lol\n");
+              builder.append("HTTP/1.1 400 BAD REQUEST\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("SYNTAX ERROR; Please input the correct parameters. ");
+              builder.append("\n");
+              builder.append("For example: /multiply?num1=1&num2=2");
             }
 
 
             Integer result = null;
             // do math
             if (num1 == null || num2 == null) {
-                result = 2 * 2;
+              result = 0;
             } else {
                 result = num1 * num2;
+              builder.append("HTTP/1.1 200 OK\n");
+              builder.append("Content-Type: text/html; charset=utf-8\n");
+              builder.append("\n");
+              builder.append("Result is: " + result);
             }
 
             // Generate response
-            builder.append("HTTP/1.1 200 OK\n");
-            builder.append("Content-Type: text/html; charset=utf-8\n");
-            builder.append("\n");
-            builder.append("Result is: " + result);
+
 
             // TODO: Include error handling here with a correct error code and
             // a response that makes sense
