@@ -205,31 +205,17 @@ class WebServer {
 
             // extract required fields from parameters
 
-            Integer num1 = null;
-            Integer num2 = null;
-
-            try {
-              num1 = Integer.parseInt(query_pairs.get("num1"));
-              num2 = Integer.parseInt(query_pairs.get("num2"));
-            } catch (Exception e) {
-              builder.append("Ya broke it ya silly goose");
-            }
-
-            boolean numDone = false;
-            while(!numDone) {
-              if(num1==null || num2 == null) {
-                builder.append("Please input the numbers ya dummy");
-              }
-              else {
-                numDone = true;
-              }
-            }
+          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
+          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
 
 
-
-
+          Integer result = null;
             // do math
-            Integer result = num1 * num2;
+          if (num1 == null || num2 == null) {
+              result = 2 * 2;
+          } else {
+            result = num1 * num2;
+          }
 
             // Generate response
               builder.append("HTTP/1.1 200 OK\n");
