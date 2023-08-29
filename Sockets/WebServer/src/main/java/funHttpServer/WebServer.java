@@ -16,6 +16,8 @@ write a response back
 
 package funHttpServer;
 
+import org.xml.sax.ErrorHandler;
+
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -194,28 +196,38 @@ class WebServer {
             builder.append("File not found: " + file);
           }
         } else if (request.contains("multiply?")) {
-          // This multiplies two numbers, there is NO error handling, so when
-          // wrong data is given this just crashes
+            // This multiplies two numbers, there is NO error handling, so when
+            // wrong data is given this just crashes
 
-          Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-          // extract path parameters
-          query_pairs = splitQuery(request.replace("multiply?", ""));
+            Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+            // extract path parameters
+            query_pairs = splitQuery(request.replace("multiply?", ""));
 
-          // extract required fields from parameters
-          Integer num1 = Integer.parseInt(query_pairs.get("num1"));
-          Integer num2 = Integer.parseInt(query_pairs.get("num2"));
+            // extract required fields from parameters
 
-          // do math
-          Integer result = num1 * num2;
+            Integer num1;
+            Integer num2;
+            do {
+                num1 = Integer.parseInt(query_pairs.get("num1"));
+                num2 = Integer.parseInt(query_pairs.get("num2"));
+            } while (num1 == null||num2 == null);
 
-          // Generate response
-          builder.append("HTTP/1.1 200 OK\n");
-          builder.append("Content-Type: text/html; charset=utf-8\n");
-          builder.append("\n");
-          builder.append("Result is: " + result);
 
-          // TODO: Include error handling here with a correct error code and
-          // a response that makes sense
+            // do math
+            Integer result = num1 * num2;
+
+            // Generate response
+            try {
+                builder.append("HTTP/1.1 200 OK\n");
+                builder.append("Content-Type: text/html; charset=utf-8\n");
+                builder.append("\n");
+                builder.append("Result is: " + result);
+            } catch (Exception e) {
+                builder.append("Error: " + e);
+            }
+
+            // TODO: Include error handling here with a correct error code and
+            // a response that makes sense
 
         } else if (request.contains("github?")) {
           // pulls the query from the request and runs it with GitHub's REST API
